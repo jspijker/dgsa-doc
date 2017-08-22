@@ -1,0 +1,141 @@
+---
+runtime: shiny
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+
+```{r, message=FALSE,echo=FALSE,results='hide'}
+library(knitr)
+library(plotly)
+library(ggplot2)
+library(shiny)
+library(mapproj)
+
+```
+
+
+# Introduction
+
+Small usage example of the Dutch Geochemical Soil Atlas package
+
+The data of the atlas is part of the DGSA package. Execute the following code to load it (using the devtools package):
+
+```{r,echo=TRUE}
+devtools::install_github("dgsa","jspijker")
+library(dgsa)
+data(atlas)
+data(atlasmeta)
+
+```
+
+The DGSA package contains the data and 3 functions to visualise the data, these function are:
+ * distribution
+ * map
+ * scatter
+ 
+Documentation of these functions can be found in man pages. These functions give a ggplot2 object as result, see the ggplot2 library and man page.
+
+# DGSA data and meta-data
+
+Information how the data of the Dutch Geochemical Soil Atlas was obtained, please see the accompaniyng thesis of [Van Der Veer (2006)](https://dspace.library.uu.nl/handle/1874/13275).
+
+The dataset is a single large data.frame named 'atlas' and a second data.frame with meta data named 'atlasmeta'. Please see the man pages of atlas and atlasmeta for more information
+
+# Distribution
+
+```{r echo = FALSE}
+
+fluidRow(
+  column(4,
+         selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20)
+         ),
+column(4,
+       sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+       ),
+column(4,
+
+       selectInput("var1_x",label="x as",
+			                   choices=atlasmeta$label,selected="Al total")
+       )
+)
+
+```
+
+```{r echo = FALSE}
+renderPlot({
+  
+  elem <-label2elem(input$var1_x)
+  p <-distribution(elem,xadj=input$bw_adjust,xbin=input$n_breaks)
+  p
+  
+})
+```
+
+# covariance
+
+Interactive scatterplot showing covariance between two variables
+
+```{r echo=FALSE}
+fluidRow(
+  column(6,
+         selectInput("var2_x",label="x as",
+			choices=atlasmeta$label,selected="Al total")
+         ),
+  column(6,
+         
+selectInput("var2_y",label="y as",
+			choices=atlasmeta$label,selected="Zn total")
+         )
+)
+
+```
+
+```{r echo=FALSE, plotly=TRUE}
+renderPlotly({
+
+  elem.x <- label2elem(input$var2_x)
+  elem.y <- label2elem(input$var2_y)
+  
+  p2 <- scatterplot(elem.x,elem.y)  
+  p2
+  
+})
+```
+
+# maps
+
+Bubble maps of top and subsoil
+
+```{r echo=FALSE}
+
+selectInput("var3_x",label="x as",
+            	choices=atlasmeta$label,selected="Al total")
+			
+
+```
+
+```{r echo=FALSE}
+
+data(nlborder)
+data(nlrivers)
+
+nlshape <- nlborder
+rivshape <- nlrivers
+
+renderPlot({
+
+  elem.x <- label2elem(input$var3_x)
+  p <- map(elem.x)
+  p
+    
+},width=900,height=600)
+```
+
+
+
+

@@ -19,12 +19,12 @@ library(mapproj)
 
 # Introduction
 
-Small usage example of the Dutch Geochemical Soil Atlas package
+Small usage example of the Dutch Geochemical Soil Atlas package. This document can be found at https://github.com/jspijker/dgsa-doc
 
-The data of the atlas is part of the DGSA package. Execute the following code to load it (using the devtools package):
+The data of the atlas is part of the [DGSA package](https://github.com/jspijker/dgsa). Execute the following code to load it (using the devtools package):
 
 ```{r,echo=TRUE}
-devtools::install_github("dgsa","jspijker")
+devtools::install_github("jspijker/dgsa")
 library(dgsa)
 data(atlas)
 data(atlasmeta)

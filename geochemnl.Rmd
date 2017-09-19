@@ -40,7 +40,7 @@ Documentation of these functions can be found in man pages. These functions give
 
 # DGSA data and meta-data
 
-Information how the data of the Dutch Geochemical Soil Atlas was obtained, please see the accompaniyng thesis of [Van Der Veer (2006)](https://dspace.library.uu.nl/handle/1874/13275).
+For information about how the data of the Dutch Geochemical Soil Atlas was obtained, please see the accompaniyng thesis of [Van Der Veer (2006)](https://dspace.library.uu.nl/handle/1874/13275).
 
 The dataset is a single large data.frame named 'atlas' and a second data.frame with meta data named 'atlasmeta'. Please see the man pages of atlas and atlasmeta for more information
 
